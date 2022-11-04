@@ -9,10 +9,8 @@ import react, { useState, useEffect } from 'react';
 
 function Header() {
     let navigate = useNavigate();
-    const [name, setName] = useState("");
-    useEffect(() => {
-        setName((JSON.parse(localStorage.getItem('user-info'))).name);
-    }, [])
+    let user=(JSON.parse(localStorage.getItem('user-info')));
+
     async function logOut() {
         localStorage.clear();
         navigate("/login");
@@ -42,7 +40,7 @@ function Header() {
                         {
                             localStorage.getItem('user-info') ?
                                 <>
-                                    <NavDropdown title={name} id="collasible-nav-dropdown">
+                                    <NavDropdown title={user && user.name} id="collasible-nav-dropdown">
                                         <NavDropdown.Item onClick={logOut}>Log Out</NavDropdown.Item>
                                     </NavDropdown>
                                 </>

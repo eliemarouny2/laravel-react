@@ -7,12 +7,6 @@ import { useNavigate } from 'react-router-dom';
 function AddShipment() {
   let navigate = useNavigate();
 
-  useEffect(() => {
-    if (!localStorage.getItem("user-info")) {
-      navigate("/login");
-    }
-  }, [])
-
   const [waybill, setWaybill] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");

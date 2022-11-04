@@ -7,13 +7,8 @@ function Footer() {
   return (
     <Navbar fixed="bottom" bg="light" expand="lg">
       <Container>
-
         <Navbar.Collapse id="basic-navbar-nav">
-          
-           <p>
-            Copyright
-           </p>
-         
+           <p>Copyright</p>
         </Navbar.Collapse>
       </Container>
     </Navbar>

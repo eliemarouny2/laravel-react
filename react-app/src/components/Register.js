@@ -7,7 +7,7 @@ function Register() {
     useEffect(()=>{
         if(localStorage.getItem("user-info"))
         {
-            navigate("/add");
+            navigate("/manage_shipments");
         }
     },[])
 

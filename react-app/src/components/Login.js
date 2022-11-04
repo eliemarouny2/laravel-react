@@ -10,7 +10,7 @@ function Login() {
     useEffect(()=>{
         if(localStorage.getItem("user-info"))
         {
-            navigate("/add");
+            navigate("/manage_shipments");
         }
     },[]);
 
@@ -18,7 +18,7 @@ function Login() {
     const [password,setPassword]=useState("");
 
     async function logIn(){
-        let item=[email,password];
+        let item={email,password};
         console.log(item);
         let result=await fetch("http://localhost:8000/api/login",{
             method:'POST',
@@ -30,7 +30,7 @@ function Login() {
         })
         result=await result.json();
         localStorage.setItem('user-info', JSON.stringify(result));
-        navigate("/add");
+        navigate("/manage_shipments");
     }
     return (
         <div className=''>

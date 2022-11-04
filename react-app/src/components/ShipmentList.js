@@ -1,19 +1,20 @@
 import Table from 'react-bootstrap/Table';
-import react, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 
 
+
 function ShipmentList() {
-  const [data, setData] = useState("");
-  const [email, setEmail] = useState("");
 
-  function viewShipment(){
+  const [data, setData] = useState([]);
 
-  }
-  function editShipment(){
+  function viewShipment() {
 
   }
-  function deleteShipment(){
+  function editShipment() {
+
+  }
+  function deleteShipment() {
 
   }
 
@@ -26,14 +27,12 @@ function ShipmentList() {
         "Accept": "application/json"
       },
 
-    }).then((result)=> result.json());
+    }).then((result) => result.json());
     setData(result);
-  
+
   }
 
   useEffect(() => {
-    setEmail((JSON.parse(localStorage.getItem('user-info'))).email);
-     console.log(email);
     fetchShipments();
   }, [])
 
@@ -50,31 +49,28 @@ function ShipmentList() {
         </tr>
       </thead>
       <tbody>
-        { data && data.map((item) => (
-            <tr>
-              <td>{item.id}</td>
-              <td>{item.waybill}</td>
-              <td>{item.customerName}</td>
-              <td>{item.customerAddress}</td>
-              <td>{item.customerPhone}</td>
-              <td>
+        {data && data.map((item) => (
+          <tr key={item.id}>
+            <td>{item.id}</td>
+            <td>{item.waybill}</td>
+            <td>{item.customerName}</td>
+            <td>{item.customerAddress}</td>
+            <td>{item.customerPhone}</td>
+            <td>
               <Button variant="primary" onClick={viewShipment} >
                 View
-            </Button>
-            &nbsp;
-            <Button variant="warning" onClick={editShipment} >
+              </Button>
+              &nbsp;
+              <Button variant="warning" onClick={editShipment} >
                 Edit
-            </Button>
-            &nbsp;
-
-            <Button variant="danger" onClick={deleteShipment} >
+              </Button>
+              &nbsp;
+              <Button variant="danger" onClick={deleteShipment} >
                 Delete
-            </Button>
-              </td>
-            </tr>
-          )
-          )
-        }
+              </Button>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </Table>
   );
