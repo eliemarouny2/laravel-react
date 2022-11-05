@@ -1,3 +1,7 @@
 .red{
     color: red;
 }
+.App{
+    padding-left: 0;
+    padding-right: 0;
+}

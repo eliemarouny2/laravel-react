@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 function ShipmentList() {
 
-  const [data, setData] = useState([]);
+  const [shipments, setShipments] = useState([]);
 
   function viewShipment() {
 
@@ -19,16 +19,21 @@ function ShipmentList() {
   }
 
   async function fetchShipments() {
-    let result = await fetch("http://localhost:8000/api/manage_shipments", {
+    let email = (JSON.parse(localStorage.getItem('user-info')).email);
+    let jsonfile = { email };
+    console.log(jsonfile);
+    let response = await fetch("http://localhost:8000/api/manage_shipments", {
       method: 'POST',
-      body: "",
+      body: JSON.stringify(jsonfile),
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
 
-    }).then((result) => result.json());
-    setData(result);
+    })
+    response = await response.json();
+    setShipments(response);
+    console.log(response);
 
   }
 
@@ -49,19 +54,15 @@ function ShipmentList() {
         </tr>
       </thead>
       <tbody>
-        {data && data.map((item) => (
-          <tr key={item.id}>
-            <td>{item.id}</td>
-            <td>{item.waybill}</td>
-            <td>{item.customerName}</td>
-            <td>{item.customerAddress}</td>
-            <td>{item.customerPhone}</td>
+        {shipments && shipments.map((shipment) => (
+          <tr key={shipment.id}>
+            <td>{shipment.id}</td>
+            <td>{shipment.waybill}</td>
+            <td>{shipment.customerName}</td>
+            <td>{shipment.customerAddress}</td>
+            <td>{shipment.customerPhone}</td>
             <td>
-              <Button variant="primary" onClick={viewShipment} >
-                View
-              </Button>
-              &nbsp;
-              <Button variant="warning" onClick={editShipment} >
+              <Button variant="secondary" onClick={editShipment} >
                 Edit
               </Button>
               &nbsp;
