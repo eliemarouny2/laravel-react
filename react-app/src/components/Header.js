@@ -3,9 +3,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useNavigate } from 'react-router-dom';
-import react, { useState, useEffect } from 'react';
-
-
 
 function Header() {
     let navigate = useNavigate();
@@ -34,7 +31,6 @@ function Header() {
                                     <Nav.Link href="/register">Register</Nav.Link>
                                 </>
                         }
-
                     </Nav>
                     <Nav>
                         {
@@ -49,7 +45,6 @@ function Header() {
                                       <Nav.Link href="/register">Guest</Nav.Link>
                                 </>
                         }
-
                     </Nav>
                 </Navbar.Collapse>
             </Container>

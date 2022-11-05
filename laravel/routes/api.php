@@ -24,9 +24,9 @@ Route::post('register',[UserController::class,'register']);
 Route::post('login',[UserController::class,'login']);
 
 Route::post('add_shipment',[ShipmentController::class,'add_shipment']);
-Route::post('delete_shipment',[ShipmentController::class,'delete_shipment']);
 Route::post('manage_shipments',[ShipmentController::class,'manage_shipments']);
 Route::post('view_shipment',[ShipmentController::class,'view_shipment']);
 Route::post('update_shipment',[ShipmentController::class,'update_shipment']);
 Route::post('cancel_shipment',[ShipmentController::class,'cancel_shipment']);
+Route::delete('delete_shipment',[ShipmentController::class,'delete_shipment']);
 

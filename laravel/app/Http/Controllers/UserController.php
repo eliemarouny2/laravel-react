@@ -22,7 +22,7 @@ class UserController extends Controller
     {
         $user = User::where('email', $req->email)->first();
         if (!$user || !Hash::check($req->password, $user->password)) {
-            return ["error" => "Invalid credentials"];
+            return response()->json(["error"=>"Invalid Credentials"],401);
         }
         return $user;
     }
