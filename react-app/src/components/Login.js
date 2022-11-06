@@ -54,12 +54,7 @@ function Login() {
                         <Form.Group className="mb-3" onChange={(e) => setPassword(e.target.value)} controlId="formGroupPassword">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control type="password" placeholder="Password" />
-                            {error && (
-                                <Form.Text className="red">
-                                   {error}
-                                </Form.Text>
-                            )}
-
+                            {error && (<Form.Text className="red">{error}</Form.Text>)}
                         </Form.Group>
                         <Button variant="secondary" onClick={logIn} >
                             Log In

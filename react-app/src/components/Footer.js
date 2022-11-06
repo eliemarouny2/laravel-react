@@ -1,14 +1,14 @@
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import '../assets/css/styles.css';
+
 
 function Footer() {
   return (
     <Navbar fixed="bottom" bg="light" expand="lg">
       <Container>
-        <Navbar.Collapse id="basic-navbar-nav">
-           <p>Copyright</p>
+        <Navbar.Collapse className="justify-content-center" id="basic-navbar-nav">
+           <p>All Rights Reserved ©</p>
         </Navbar.Collapse>
       </Container>
     </Navbar>

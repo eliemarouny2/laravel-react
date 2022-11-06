@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-function AddShipment() {
+function EditShipment() {
   let navigate = useNavigate();
   let email = (JSON.parse(localStorage.getItem('user-info')).email);
 
@@ -63,4 +63,4 @@ function AddShipment() {
   );
 }
 
-export default AddShipment;
+export default EditShipment;

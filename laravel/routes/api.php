@@ -28,5 +28,5 @@ Route::post('manage_shipments',[ShipmentController::class,'manage_shipments']);
 Route::post('view_shipment',[ShipmentController::class,'view_shipment']);
 Route::post('update_shipment',[ShipmentController::class,'update_shipment']);
 Route::post('cancel_shipment',[ShipmentController::class,'cancel_shipment']);
-Route::delete('delete_shipment',[ShipmentController::class,'delete_shipment']);
+Route::delete('delete_shipment/{id}',[ShipmentController::class,'delete_shipment']);
 

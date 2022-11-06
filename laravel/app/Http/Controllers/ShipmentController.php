@@ -23,6 +23,8 @@ class ShipmentController extends Controller
     }
     function delete_shipment($id)
     {
+        $result = Shipment::where('id', $id)->delete();
+        return $result;
     }
     function view_shipment(Request $req)
     {

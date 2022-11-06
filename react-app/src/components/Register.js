@@ -1,15 +1,15 @@
-import react, { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
-    useEffect(()=>{
-        if(localStorage.getItem("user-info"))
-        {
+    const [error, setError] = useState("");
+    useEffect(() => {
+        if (localStorage.getItem("user-info")) {
             navigate("/manage_shipments");
         }
-    },[])
+    }, [])
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ function Register() {
     async function signUp() {
         let item = { name, email, password };
         console.log(item);
-        let result = await fetch("http://localhost:8000/api/register", {
+        let response = await fetch("http://localhost:8000/api/register", {
             method: 'POST',
             body: JSON.stringify(item),
             headers: {
@@ -27,10 +27,13 @@ function Register() {
                 "Accept": "application/json"
             }
         })
-        result = await result.json();
-        localStorage.setItem('user-info', JSON.stringify(result));
-        navigate("/add");
-
+        if (response.ok) {
+            response = await response.json();
+            localStorage.setItem('user-info', JSON.stringify(response));
+            navigate("/manage_shipments");
+        } else {
+            setError("Email Already exists");
+        }
     }
 
     return (
@@ -42,13 +45,14 @@ function Register() {
             <Form.Group className="mb-3" controlId="formGroupEmail">
                 <Form.Label>Email</Form.Label>
                 <Form.Control type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Enter Email" />
+                {error && (<Form.Text className="red">{error}</Form.Text>)}
             </Form.Group>
             <Form.Group className="mb-3" onChange={(e) => setPassword(e.target.value)} controlId="formGroupPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" placeholder="Password" />
             </Form.Group>
             <Button variant="primary" onClick={signUp} >
-                Submit
+                Register
             </Button>
         </Form>
     )
