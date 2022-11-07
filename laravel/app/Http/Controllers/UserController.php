@@ -4,27 +4,71 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
     function register(Request $req)
+
     {
-        $user = new User;
-        $user->name = $req->input('name');
-        $user->email = $req->input('email');
-        $user->password = Hash::make($req->input('password'));
-        $user->save();
-        return $user;
+        $fields = $req->validate([
+            'name'       =>  'required|string|max:191',
+            'email'      =>  'required|email|string|unique:users|max:191',
+            'password'   =>  'required|string|confirmed|min:6',
+        ]);
+
+        $user = User::create([
+            'name'  =>  $fields['name'],
+            'email'  =>  $fields['email'],
+            'password'  =>  bcrypt($fields['password']),
+        ]);
+
+        $token = $user->createToken($user->email . '_token')->plainTextToken;
+
+        return response()->json([
+            'status'    => 200,
+            'name'      => $user->name,
+            'email'      => $user->email,
+            'token'     => $token,
+            'message'   => 'Registration successful'
+        ]);
     }
 
     function login(Request $req)
     {
-        $user = User::where('email', $req->email)->first();
-        if (!$user || !Hash::check($req->password, $user->password)) {
-            return response()->json(["error"=>"Invalid Credentials"],401);
+        $fields = $req->validate([
+            'email'     => 'required|email|string',
+            'password'  => 'required|min:6'
+        ]);
+
+        $user = User::where('email', $fields['email'])->first();
+
+
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response()->json([
+                'status'    => 401,
+                'message'   => 'Invalid credentials'
+            ]);
+        } else {
+            $token = $user->createToken($user->email . '_token')->plainTextToken;
+            return response()->json([
+                'status'    => 200,
+                'name'      => $user->name,
+                'email'      => $user->email,
+                'token'     => $token,
+                'message'   => 'Login successful'
+            ]);
         }
-        return $user;
     }
-    
+    function logout()
+    {
+        auth()->user()->tokens()->delete();
+        return response()->json([
+            'status'=>200,
+            'message'=>'Logged out successfully'
+        ]);
+    }
 }

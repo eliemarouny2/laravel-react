@@ -15,7 +15,23 @@ function EditShipment() {
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
 
-  async function addShipment() {
+  async function getShipment() {
+    let item = { waybill, name, address, phone, email };
+    console.log(item);
+    let response = await fetch("http://localhost:8000/api/get_shipment", {
+      method: 'POST',
+      body: JSON.stringify(item),
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      }
+    }).then((response) => response.json());
+      navigate("/manage_shipments");
+
+ 
+
+  }
+  async function updateShipment() {
     let item = { waybill, name, address, phone, email };
     console.log(item);
     let response = await fetch("http://localhost:8000/api/add_shipment", {
@@ -38,23 +54,23 @@ function EditShipment() {
         <Col md={5} lg={6}>
           <Form>
             <Form.Group className="mb-3" controlId="formBasicWaybill">
-              <Form.Label>Waybill</Form.Label>
+              <Form.Label>Waybill:</Form.Label>
               <Form.Control type="text" onChange={(e) => setWaybill(e.target.value)} placeholder="Enter waybill" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label>Customer Name</Form.Label>
+              <Form.Label>Customer Name:</Form.Label>
               <Form.Control type="text" onChange={(e) => setName(e.target.value)} placeholder="Enter customer name" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicAddress">
-              <Form.Label>Customer Address</Form.Label>
+              <Form.Label>Customer Address:</Form.Label>
               <Form.Control type="text" onChange={(e) => setAddress(e.target.value)} placeholder="Enter customer address" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPhone">
-              <Form.Label>Customer Phone</Form.Label>
+              <Form.Label>Customer Phone:</Form.Label>
               <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} placeholder="Enter customer phone" />
             </Form.Group>
-            <Button variant="secondary" onClick={addShipment}>
-              Add Shipment
+            <Button variant="secondary" onClick={updateShipment}>
+              Save
             </Button>
           </Form>
         </Col>

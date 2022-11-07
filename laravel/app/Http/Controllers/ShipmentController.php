@@ -10,36 +10,56 @@ class ShipmentController extends Controller
 {
     function add_shipment(Request $req)
     {
-        $email = $req->input('email');
-        $user_id = User::where('email', $email)->value('id');
+        $req->validate([
+            'name'      =>  'required',
+            'address'   =>  'required',
+            'phone'     =>  'required',
+            'waybill'   =>  'required',
+        ]);
+        $email      = $req->input('email');
+        $user_id    = User::where('email', $email)->value('id');
+
         $shipment = new Shipment;
-        $shipment->waybill = $req->input('waybill');
-        $shipment->customerAddress = $req->input('address');
-        $shipment->customerName = $req->input('name');
-        $shipment->customerPhone = $req->input('phone');
-        $shipment->user_id = $user_id;
+        $shipment->waybill          = $req->input('waybill');
+        $shipment->customerAddress  = $req->input('address');
+        $shipment->customerName     = $req->input('name');
+        $shipment->customerPhone    = $req->input('phone');
+        $shipment->user_id          = $user_id;
         $shipment->save();
+
         return $shipment;
     }
-    function delete_shipment($id)
+    function cancel_shipment($id)
     {
-        $result = Shipment::where('id', $id)->delete();
-        return $result;
+        $shipment = Shipment::find($id);
+        $shipment->status = 0;
+        $shipment->update();
     }
-    function view_shipment(Request $req)
+    function get_shipment($id)
     {
+        $shipment = Shipment::where('id', $id)->first();
+        return $shipment;
     }
-    function manage_shipments(Request $req)
+    function shipment_list(Request $req)
     {
 
         $user_id = User::where('email', $req->input('email'))->value('id');
-        $shipments = Shipment::where('user_id', $user_id)->get();
-        return $shipments;
-    }
-    function cancel_shipment(Request $req)
-    {
+        $shipments = Shipment::where('user_id', $user_id)->where('status', 1)->get();
+        return response()->json([
+            'status'    => 200,
+            'shipments' => $shipments
+        ]);
     }
     function update_shipment(Request $req)
     {
+        $shipment = Shipment::find($req->id);
+
+        $shipment->waybill          = $req->input('waybill');
+        $shipment->customerAddress  = $req->input('address');
+        $shipment->customerName     = $req->input('name');
+        $shipment->customerPhone    = $req->input('phone');
+        $shipment->update();
+
+        return $shipment;
     }
 }

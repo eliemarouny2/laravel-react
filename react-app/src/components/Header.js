@@ -3,13 +3,17 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
+
 
 function Header() {
     let navigate = useNavigate();
-    let user=(JSON.parse(localStorage.getItem('user-info')));
+    let user = (localStorage.getItem('auth_name'));
 
     async function logOut() {
         localStorage.clear();
+        swal('Success',"Successfully logged out","success");
+
         navigate("/login");
     }
     return (
@@ -20,7 +24,7 @@ function Header() {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         {
-                            localStorage.getItem('user-info') ?
+                            localStorage.getItem('auth_token') ?
                                 <>
                                     <Nav.Link href="/manage_shipments">Manage Shipments</Nav.Link>
                                     <Nav.Link href="/add_shipment">Add Shipment</Nav.Link>
@@ -34,15 +38,14 @@ function Header() {
                     </Nav>
                     <Nav>
                         {
-                            localStorage.getItem('user-info') ?
+                            localStorage.getItem('auth_token') ?
                                 <>
-                                    <NavDropdown title={user && user.name} id="collasible-nav-dropdown">
+                                    <NavDropdown title={user} id="collasible-nav-dropdown">
                                         <NavDropdown.Item onClick={logOut}>Log Out</NavDropdown.Item>
                                     </NavDropdown>
                                 </>
                                 :
                                 <>
-                                      <Nav.Link href="/register">Guest</Nav.Link>
                                 </>
                         }
                     </Nav>

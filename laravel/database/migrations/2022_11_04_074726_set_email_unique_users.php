@@ -26,6 +26,8 @@ class SetEmailUniqueUsers extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('email',191)->change();
+        });
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPasswordToUsers extends Migration
+class CreatePersonalAccessTokens extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddPasswordToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->text('password')->after('email');
+        Schema::create('personal_access_tokens', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +26,6 @@ class AddPasswordToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('personal_access_tokens');
     }
 }

@@ -16,17 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', [UserController::class, 'register']);
+Route::post('login', [UserController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('logout', [UserController::class, 'logout']);
+    Route::post('add_shipment', [ShipmentController::class, 'add_shipment']);
+    Route::post('shipment_list', [ShipmentController::class, 'shipment_list']);
+    Route::post('get_shipment', [ShipmentController::class, 'get_shipment']);
+    Route::post('update_shipment', [ShipmentController::class, 'update_shipment']);
+    Route::put('cancel_shipment/{id}', [ShipmentController::class, 'cancel_shipment']);
 });
-
-Route::post('register',[UserController::class,'register']);
-Route::post('login',[UserController::class,'login']);
-
-Route::post('add_shipment',[ShipmentController::class,'add_shipment']);
-Route::post('manage_shipments',[ShipmentController::class,'manage_shipments']);
-Route::post('view_shipment',[ShipmentController::class,'view_shipment']);
-Route::post('update_shipment',[ShipmentController::class,'update_shipment']);
-Route::post('cancel_shipment',[ShipmentController::class,'cancel_shipment']);
-Route::delete('delete_shipment/{id}',[ShipmentController::class,'delete_shipment']);
-

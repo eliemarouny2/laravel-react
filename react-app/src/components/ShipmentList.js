@@ -1,8 +1,10 @@
 import Table from 'react-bootstrap/Table';
+import React from 'react';
 import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import { FaTrashAlt, FaEye, FaPen } from "react-icons/fa";
+import axios from 'axios';
 
 
 function ShipmentList() {
@@ -31,22 +33,12 @@ function ShipmentList() {
 
 
   async function fetchShipments() {
-    let email = (JSON.parse(localStorage.getItem('user-info')).email);
+    
+    let email = localStorage.getItem('auth_email');
     let jsonfile = { email };
-    console.log(jsonfile);
-    let response = await fetch("http://localhost:8000/api/manage_shipments", {
-      method: 'POST',
-      body: JSON.stringify(jsonfile),
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-
-    })
-    response = await response.json();
-    setShipments(response);
-    console.log(response);
-
+  axios.post('/api/shipment_list',jsonfile).then(res=>{
+   setShipments(res.data.shipments);
+  });
   }
 
   useEffect(() => {
@@ -75,11 +67,11 @@ function ShipmentList() {
               <td>{shipment.customerAddress}</td>
               <td>{shipment.customerPhone}</td>
               <td>
-                <Button variant="primary" title="view" size="sm" onClick={editShipment} >
+                <Button variant="primary" title="view" size="sm" onClick={viewShipment} >
                   <FaEye />
                 </Button>
                 &nbsp;
-                <Button variant="secondary" size="sm" title="edit" onClick={editShipment} >
+                <Button variant="secondary" size="sm" title="edit" shipment={shipment.id} onClick={editShipment} >
                   <FaPen />
                 </Button>
                 &nbsp;
