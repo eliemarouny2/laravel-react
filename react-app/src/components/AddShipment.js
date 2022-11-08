@@ -1,42 +1,44 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import react, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import axios from 'axios';
+import swal from 'sweetalert';
 
 function AddShipment() {
   let navigate = useNavigate();
-  let email = (JSON.parse(localStorage.getItem('user-info')).email);
+  let email = localStorage.getItem('auth_email');
 
   const [waybill, setWaybill] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
 
-  async function addShipment() {
-    let item = { waybill, name, address, phone, email };
-    console.log(item);
-    let response = await fetch("http://localhost:8000/api/add_shipment", {
-      method: 'POST',
-      body: JSON.stringify(item),
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+  const addShipment = (e) => {
+    e.preventDefault();
+    let data = { waybill, name, address, phone, email };
+    data = JSON.stringify(data);
+    console.log(data);
+    axios.post('/api/add_shipment', data).then(res => {
+      if (res.data.status === 200) {
+        swal('Success', res.data.message, "success");
+        navigate('/manage_shipments');
+
+      } else if (res.data.status === 401) {
+        swal('Warning', res.data.message, "warning");
+        console.log('unsuccessful');
       }
-    }).then((response) => response.json());
-      navigate("/manage_shipments");
-
- 
-
+    });
   }
 
   return (
     <Container className='mt-5 mb-4' >
       <Row className='justify-content-md-center'>
         <Col md={5} lg={6}>
-          <Form>
+          <Form onSubmit={addShipment}>
             <Form.Group className="mb-3" controlId="formBasicWaybill">
               <Form.Label>Waybill</Form.Label>
               <Form.Control type="text" onChange={(e) => setWaybill(e.target.value)} placeholder="Enter waybill" />
@@ -53,7 +55,7 @@ function AddShipment() {
               <Form.Label>Customer Phone</Form.Label>
               <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} placeholder="Enter customer phone" />
             </Form.Group>
-            <Button variant="secondary" onClick={addShipment}>
+            <Button variant="secondary" type="submit">
               Add Shipment
             </Button>
           </Form>

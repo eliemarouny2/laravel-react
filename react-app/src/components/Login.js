@@ -1,51 +1,44 @@
-import { useState, useEffect } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import '../assets/css/styles.css';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import '../assets/css/styles.css';
 import swal from 'sweetalert';
-
-import React from 'react';
 import axios from 'axios';
 
-function Login(){
+
+function Login() {
     let navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [error, setError] = useState("");
-
     useEffect(() => {
         if (localStorage.getItem("auth_token")) {
             navigate("/manage_shipments");
         }
-    }, [])
+    }, []);
 
-    const Login= (e)=> {
+    const Login = (e) => {
         e.preventDefault();
-        let data = {  email, password };
-        data=JSON.stringify(data);
+        let data = { email, password };
+        data = JSON.stringify(data);
 
-        axios.get('/sanctum/csrf-cookie').then(response=>{
-            axios.post('/api/login',data).then(res=>{
-                if(res.data.status===200){
-                    localStorage.setItem('auth_token',res.data.token);
-                    localStorage.setItem('auth_name',res.data.name);
-                    localStorage.setItem('auth_email',res.data.email);
-                    swal('Success',res.data.message,"success");
+        axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.post('/api/login', data).then(res => {
+                if (res.data.status === 200) {
+                    localStorage.setItem('auth_token', res.data.token);
+                    localStorage.setItem('auth_name', res.data.name);
+                    localStorage.setItem('auth_email', res.data.email);
+                    swal('Success', res.data.message, "success");
                     navigate('/manage_shipments');
-                    
-                }else if(res.data.status===401){
-                    swal('Warning',res.data.message,"warning");
+
+                } else if (res.data.status === 401) {
+                    swal('Warning', res.data.message, "warning");
                     console.log('unsuccessful');
                 }
             });
         })
-       
+
     }
 
     return (

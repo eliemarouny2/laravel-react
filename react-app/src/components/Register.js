@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import {Form,Col,Row,Container,Button} from 'react-bootstrap';
 import axios from 'axios';
 import swal from 'sweetalert';
 
@@ -15,8 +11,6 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [password_confirmation, setPassword_confirmation] = useState("");
-
-    const [error, setError] = useState("");
 
     useEffect(() => {
         if (localStorage.getItem("auth_token")) {

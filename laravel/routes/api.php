@@ -20,10 +20,11 @@ Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('edit_shipment/{id}', [ShipmentController::class, 'edit_shipment']);
     Route::post('logout', [UserController::class, 'logout']);
-    Route::post('add_shipment', [ShipmentController::class, 'add_shipment']);
     Route::post('shipment_list', [ShipmentController::class, 'shipment_list']);
-    Route::post('get_shipment', [ShipmentController::class, 'get_shipment']);
+    Route::get('get_shipment/{id}', [ShipmentController::class, 'get_shipment']);
     Route::post('update_shipment', [ShipmentController::class, 'update_shipment']);
-    Route::put('cancel_shipment/{id}', [ShipmentController::class, 'cancel_shipment']);
+    Route::get('cancel_shipment/{id}', [ShipmentController::class, 'cancel_shipment']);
+    Route::post('add_shipment', [ShipmentController::class, 'add_shipment']);
 });

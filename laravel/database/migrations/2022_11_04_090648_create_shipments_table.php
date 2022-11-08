@@ -15,7 +15,7 @@ class CreateShipmentsTable extends Migration
     {
         Schema::create('shipments', function (Blueprint $table) {
             $table->id();
-            $table->string('waybill');
+            $table->string('waybill')->unique();
             $table->string('customerAddress');
             $table->string('customerName');
             $table->string('customerPhone');

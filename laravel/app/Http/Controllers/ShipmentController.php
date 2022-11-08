@@ -14,7 +14,7 @@ class ShipmentController extends Controller
             'name'      =>  'required',
             'address'   =>  'required',
             'phone'     =>  'required',
-            'waybill'   =>  'required',
+            'waybill'   =>  'required|unique:shipments',
         ]);
         $email      = $req->input('email');
         $user_id    = User::where('email', $email)->value('id');
@@ -24,21 +24,31 @@ class ShipmentController extends Controller
         $shipment->customerAddress  = $req->input('address');
         $shipment->customerName     = $req->input('name');
         $shipment->customerPhone    = $req->input('phone');
+        $shipment->status           = 1;
         $shipment->user_id          = $user_id;
         $shipment->save();
 
-        return $shipment;
+        return response()->json([
+            'status'    => 200,
+            'message'   => 'Successfully Added'
+        ]);
     }
     function cancel_shipment($id)
     {
         $shipment = Shipment::find($id);
         $shipment->status = 0;
         $shipment->update();
+        return response()->json([
+            'status'    =>  'ok'
+        ]);
     }
     function get_shipment($id)
     {
         $shipment = Shipment::where('id', $id)->first();
-        return $shipment;
+        return response()->json([
+            'status'    =>  'ok',
+            'shipment'  => $shipment
+        ]);
     }
     function shipment_list(Request $req)
     {
@@ -52,14 +62,30 @@ class ShipmentController extends Controller
     }
     function update_shipment(Request $req)
     {
-        $shipment = Shipment::find($req->id);
+        $req->validate([
+            'name'      =>  'required',
+            'address'   =>  'required',
+            'phone'     =>  'required',
+            'waybill'   =>  'required',
+        ]);
+        $shipment = Shipment::where('waybill',$req->input('waybill'))->update([
+            'customerAddress'       => $req->input('address'),
+            'customerName'       => $req->input('name'),
+            'customerPhone'       => $req->input('phone')
+        ]);
 
-        $shipment->waybill          = $req->input('waybill');
-        $shipment->customerAddress  = $req->input('address');
-        $shipment->customerName     = $req->input('name');
-        $shipment->customerPhone    = $req->input('phone');
-        $shipment->update();
-
-        return $shipment;
+        if($shipment){
+            return response()->json([
+                'status'    => 200,
+                'message'   => 'Successfully Updated'
+            ]);
+        } else{
+            return response()->json([
+                'status'    => 500,
+                'message'   => 'Error Updating'
+            ]);
+        }
+       
+        
     }
 }

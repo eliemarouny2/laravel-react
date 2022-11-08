@@ -9,7 +9,8 @@ function Protected() {
     if (!localStorage.getItem("auth_token")) {
       navigate("/login");
     }
-  }, [])
+  }, []);
+  
   return (
    <></>
   );

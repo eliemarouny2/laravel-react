@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {Container} from 'react-bootstrap';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Register from './components/Register';
 import Login from './components/Login';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AddShipment from './components/AddShipment';
 import ShipmentList from './components/ShipmentList';
 import Protected from './components/Protected';
-import Container from 'react-bootstrap/Container';
-import './assets/css/styles.css';
 import EditShipment from './components/EditShipment';
+import ViewShipment from './components/ViewShipment';
+import './assets/css/styles.css';
 import axios from 'axios';
 
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -22,10 +23,8 @@ axios.interceptors.request.use(function(config){
    return config;
 });
 
-
 const App = () => {
    return (
-     
       <Container fluid className="App">
          <Router>
             <Header />
@@ -35,8 +34,8 @@ const App = () => {
                <Route path="/add_shipment" element={<><Protected /><AddShipment /></>} />
                <Route path="/manage_shipments" element={<><Protected /><ShipmentList /></>} />
                <Route path="/edit_shipment" element={<><Protected /><EditShipment /></>} />
+               <Route path="/view_shipment" element={<><Protected /><ViewShipment /></>} />
                <Route path="*" element={<><Protected /><ShipmentList /></>} />
-
             </Routes>
             <Footer />
          </Router>
