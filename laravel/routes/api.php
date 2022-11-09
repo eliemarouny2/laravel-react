@@ -21,7 +21,7 @@ Route::post('login', [UserController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('edit_shipment/{id}', [ShipmentController::class, 'edit_shipment']);
-    Route::post('logout', [UserController::class, 'logout']);
+    Route::get('logout', [UserController::class, 'logout']);
     Route::post('shipment_list', [ShipmentController::class, 'shipment_list']);
     Route::get('get_shipment/{id}', [ShipmentController::class, 'get_shipment']);
     Route::post('update_shipment', [ShipmentController::class, 'update_shipment']);

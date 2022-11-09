@@ -3,16 +3,15 @@ import { React,useState, useEffect } from 'react';
 import { FaTrashAlt, FaEye, FaPen } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 
 function ShipmentList() {
   const [shipments, setShipments] = useState([]);
 
   async function cancelShipment(id) {
-    let email = localStorage.getItem('auth_email');
-    let jsonfile = { email, id };
-    console.log(jsonfile);
-    axios.post('/api/cancel_shipment', jsonfile).then(res => {
+    axios.get(`/api/cancel_shipment/${id}`).then(res => {
+      swal('Success', res.data.message, "success");
       setShipments(res.data.shipments);
     });
   }
@@ -38,9 +37,8 @@ function ShipmentList() {
   }, []);
 
   return (
-    <Container className="mb-5">
-      { shipments.length ?
-          <Table striped bordered hover size="sm">
+    <Container className="mb-5" style={{overflow:"overlay"}}>
+          <Table  striped bordered hover size="sm">
             <thead>
               <tr>
                 <th>#</th>
@@ -72,7 +70,7 @@ function ShipmentList() {
                       </Button>
                     </Link>
                     &nbsp;
-                    <Button variant="danger" size="sm" title="delete" onClick={() => cancelShipment(shipment.id)} >
+                    <Button variant="danger" size="sm" title="cancel" onClick={() => cancelShipment(shipment.id)} >
                       <FaTrashAlt />
                     </Button>
                   </td>
@@ -80,7 +78,6 @@ function ShipmentList() {
               ))}
             </tbody>
           </Table>
-          : <h3 className='text-center  mt-5 text-muted'>It looks like you don't have any shipments right now</h3>}
     </Container>
   );
 }

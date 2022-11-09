@@ -32,13 +32,11 @@ function Login() {
                     swal('Success', res.data.message, "success");
                     navigate('/manage_shipments');
 
-                } else if (res.data.status === 401) {
+                } else {
                     swal('Warning', res.data.message, "warning");
-                    console.log('unsuccessful');
                 }
             });
         })
-
     }
 
     return (

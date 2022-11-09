@@ -21,7 +21,6 @@ function AddShipment() {
     e.preventDefault();
     let data = { waybill, name, address, phone, email };
     data = JSON.stringify(data);
-    console.log(data);
     axios.post('/api/add_shipment', data).then(res => {
       if (res.data.status === 200) {
         swal('Success', res.data.message, "success");
@@ -29,7 +28,6 @@ function AddShipment() {
 
       } else if (res.data.status === 401) {
         swal('Warning', res.data.message, "warning");
-        console.log('unsuccessful');
       }
     });
   }

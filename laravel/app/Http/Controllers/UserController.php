@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -14,16 +15,22 @@ class UserController extends Controller
     function register(Request $req)
 
     {
-        $fields = $req->validate([
+        $validator = Validator::make($req->all(),[
             'name'       =>  'required|string|max:191',
             'email'      =>  'required|email|string|unique:users|max:191',
             'password'   =>  'required|string|confirmed|min:6',
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status'    => 401,
+                'data'      => $validator->errors()
+            ]);
+         }
 
         $user = User::create([
-            'name'  =>  $fields['name'],
-            'email'  =>  $fields['email'],
-            'password'  =>  bcrypt($fields['password']),
+            'name'  =>  $req->input('name'),
+            'email'  =>  $req->input('email'),
+            'password'  =>  bcrypt($req->input('password')),
         ]);
 
         $token = $user->createToken($user->email . '_token')->plainTextToken;
@@ -39,15 +46,9 @@ class UserController extends Controller
 
     function login(Request $req)
     {
-        $fields = $req->validate([
-            'email'     => 'required|email|string',
-            'password'  => 'required|min:6'
-        ]);
+        $user = User::where('email', $req->input('email'))->first();
 
-        $user = User::where('email', $fields['email'])->first();
-
-
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
+        if (!$user || !Hash::check($req->input('password'), $user->password)) {
             return response()->json([
                 'status'    => 401,
                 'message'   => 'Invalid credentials'

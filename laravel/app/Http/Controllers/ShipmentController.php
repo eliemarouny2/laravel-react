@@ -39,7 +39,9 @@ class ShipmentController extends Controller
         $shipment->status = 0;
         $shipment->update();
         return response()->json([
-            'status'    =>  'ok'
+            'status'    =>  'ok',
+            'message'   => 'Successfully Cancelled'
+
         ]);
     }
     function get_shipment($id)

@@ -30,7 +30,6 @@ function EditShipment() {
     e.preventDefault();
     let data = {waybill, name, address, phone };
     data = JSON.stringify(data);
-    console.log(data);
     axios.post('/api/update_shipment', data).then(res => {
       if (res.data.status === 200) {
         swal('Success', res.data.message, "success");
@@ -38,7 +37,6 @@ function EditShipment() {
 
       } else if (res.data.status === 401) {
         swal('Warning', res.data.message, "warning");
-        console.log('unsuccessful');
       }
     });
   }

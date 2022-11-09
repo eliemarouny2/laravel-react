@@ -1,5 +1,6 @@
 import {Container,Nav,Navbar,NavDropdown} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import swal from 'sweetalert';
 
 function Header() {
@@ -7,9 +8,12 @@ function Header() {
     let user = (localStorage.getItem('auth_name'));
 
     async function logOut() {
-        localStorage.clear();
-        swal('Success',"Successfully logged out","success");
-        navigate("/login");
+        await axios.get('/api/logout').then(res => {
+            localStorage.clear();
+            swal('Success',"Successfully logged out","success");
+            navigate("/login");
+        });
+       
     }
     
     return (
